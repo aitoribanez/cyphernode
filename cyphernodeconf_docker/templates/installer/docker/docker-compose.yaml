@@ -197,8 +197,10 @@ services:
   <%   for ( let index=0; index<wasabi_instance_count; index++ ) { %>
   wasabi_<%= index %>:
     image: cyphernode/wasabi:<%= wasabi_version %>
+    entrypoint: sh -c 'sleep <%= index * 30 + 11 %> ; while [ ! -f "/bitcoin_monitor/up" ]; do echo "bitcoin not ready" ; sleep <%= index * 30 + 10 %> ; done ; echo "bitcoin ready!" ; /app/docker-entrypoint.sh'
     volumes:
       - "<%= wasabi_datapath %>/<%= index %>:/root/.walletwasabi/client"
+      - bitcoin_monitor:/bitcoin_monitor:ro
     networks:
       - cyphernodenet
     depends_on:
@@ -274,7 +276,7 @@ services:
 
   lightning:
     image: cyphernode/clightning:<%= lightning_version %>
-    command: $USER sh -c 'while [ ! -f "/bitcoin_monitor/up" ]; do echo "bitcoin not ready" ; sleep 10 ; done ; echo "bitcoin ready!" ; lightningd'
+    command: $USER sh -c 'sleep 11 ; while [ ! -f "/bitcoin_monitor/up" ]; do echo "bitcoin not ready" ; sleep 10 ; done ; echo "bitcoin ready!" ; lightningd'
     <% if( lightning_expose ) { %>
     ports:
       - "9735:9735"
