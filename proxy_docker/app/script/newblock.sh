@@ -10,4 +10,5 @@ newblock() {
   local blockhash=$(echo "${request}" | cut -d ' ' -f2 | cut -d '/' -f3)
 
   do_callbacks_txid
+  wasabi_batchprivatetospender
 }
