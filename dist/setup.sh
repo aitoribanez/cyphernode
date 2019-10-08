@@ -438,12 +438,12 @@ install_docker() {
             esac
           done
         fi
-      elif [[ $cmpStatus == 'incompatible' ]]; then
-        copy_file $cyphernodeconf_filepath/bitcoin/bitcoin.conf $BITCOIN_DATAPATH/bitcoin.conf.cyphernode 0 $SUDO_REQUIRED
-        copy_file $cyphernodeconf_filepath/bitcoin/bitcoin-client.conf $BITCOIN_DATAPATH/bitcoin-client.conf.cyphernode 0 $SUDO_REQUIRED
-        echo "          [31mBlockchain data is not compatible, due to misconfigured nets.[0m"
-        echo "          [31mYour cyphernode installation is most likely broken.[0m"
-        echo "          [31mPlease check bitcoin.conf.cyphernode on how to repair it manually.[0m"
+      # elif [[ $cmpStatus == 'incompatible' ]]; then
+      #   copy_file $cyphernodeconf_filepath/bitcoin/bitcoin.conf $BITCOIN_DATAPATH/bitcoin.conf.cyphernode 0 $SUDO_REQUIRED
+      #   copy_file $cyphernodeconf_filepath/bitcoin/bitcoin-client.conf $BITCOIN_DATAPATH/bitcoin-client.conf.cyphernode 0 $SUDO_REQUIRED
+      #   echo "          [31mBlockchain data is not compatible, due to misconfigured nets.[0m"
+      #   echo "          [31mYour cyphernode installation is most likely broken.[0m"
+      #   echo "          [31mPlease check bitcoin.conf.cyphernode on how to repair it manually.[0m"
       else
         if [[ $cmpStatus == 'reindex' ]]; then
           echo "  [33mWarning[0m Reindexing will take some time."
@@ -491,7 +491,7 @@ install_docker() {
       copy_file "$cyphernodeconf_filepath/wasabi/Config.json" "$WASABI_DATAPATH/$i/Config.json" 1 $SUDO_REQUIRED
     done
 
-    if [[ $NETWORK == "regtest" ]]; then
+#    if [[ $NETWORK == "regtest" ]]; then
       if [ ! -d "$WASABI_DATAPATH/backend" ]; then
         step "   [32mcreate[0m $WASABI_DATAPATH/backend"
         sudo_if_required mkdir -p $WASABI_DATAPATH/backend
@@ -499,7 +499,7 @@ install_docker() {
       fi
       copy_file "$cyphernodeconf_filepath/wasabi/backend/Config.json" "$WASABI_DATAPATH/backend/Config.json" 1 $SUDO_REQUIRED
       copy_file "$cyphernodeconf_filepath/wasabi/backend/CcjRoundConfig.json" "$WASABI_DATAPATH/backend/CcjRoundConfig.json" 1 $SUDO_REQUIRED
-    fi
+#    fi
   fi
 
   docker swarm join-token worker > /dev/null 2>&1
